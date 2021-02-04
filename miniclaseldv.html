@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Trabajando con datos rectangulares en el tidyverse: tibbles</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luis D. Verde Arregoitia" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Trabajando con datos rectangulares en el tidyverse: <em>tibbles</em>
+## Clase de prueba para examen de certificación de RStudio
+### Luis D. Verde Arregoitia
+### <a href="https://liomys.mx" class="uri">https://liomys.mx</a>
+
+---
+
+
+
+
+
+
+
+
+
+
+
+&lt;/br &gt;
+
+## Datos rectangulares
+.fl.w-30[
+&lt;img src="rectangle1.png" width="76%" /&gt;
+]
+
+
+Cada fila tiene el mismo número de columnas
+
+Cada columna tiene el mismo número de filas
+
+Las columnas tienen la misma longitud (vectores y factores del mismo largo)
+
+---
+# En R
+
+`data.frame`    
+
+La estructura fundamental para trabajar con datos rectangulares de dos dimensiones.
+
+.pull-left[
+
+```
+##   x y
+## 1 a 1
+## 2 b 2
+## 3 c 3
+```
+]
+
+&lt;style&gt;
+.smaller {
+  font-size: 70%
+}
+&lt;/style&gt;
+
+&lt;/br&gt;
+.smaller[
+Lista de vectores del mismo largo
+]
+
+---
+
+&lt;style&gt;
+.fakeh1{
+  font-family: var(--header-font-family);
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: var(--header-color);
+}
+&lt;/style&gt;
+
+.center[.fakeh1[Tibbles] (/tibls/)]
+
+
+Modernizando el `data.frame`  
+
+Implementado para todo el `tidyverse` a través de 📦 .b.orange[tibble]
+
+.center[
+
+```
+## # A tibble: 3 x 2
+##   x         y
+##   &lt;chr&gt; &lt;dbl&gt;
+## 1 a         1
+## 2 b         2
+## 3 c         3
+```
+]
+
+
+
+???
+el paquete tibble es un componente importante, parte de los paquetes núcleo del tidyverse, facilita la gramática común provee una estructura de datos que unifica los paquetes que más usamos
+
+---
+
+Las funciones más utilizadas de .b.orange[dplyr], .b.orange[tidyr], y .b.orange[readr]
+&lt;/br&gt;
+
+--
+
+reciben un `data.frame` ➡️ regresan un `data.frame`  
+
+--
+
+reciben un `tibble` ➡️ regresan un `tibble`  
+
+--
+
+generan un objeto nuevo ➡️ crean un `tibble`
+
+---
+
+class: center, middle
+
+# ¿Modernizando el `data.frame`?
+
+---
+
+&lt;img src="motivational.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## tibbles
+
+Hacen menos y se quejan más (por nuestro bien)
+
+***
+--
+
+.smaller[
+- No asignan nombres a las filas 
+]
+
+--
+
+.smaller[
+- No modifican los nombres de las columnas
+]
+
+--
+
+.fl.w-60.pv0[
+.smaller[
+- No convierten caracteres en factores  
+
+- Exigen nombres completos para seleccionar subconjuntos de variables
+]]
+
+&lt;img src="stringsfactors.png" width="40%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+class: inverse
+
+&lt;style&gt;
+.right-column{
+  padding-top: 0;
+}
+&lt;/style&gt;
+
+
+## Creando `tibbles`
+
+Podemos crear .b[tibbles] de tres maneras:
+
+
+.pull-left[
+Combinando vectores
+
+
+Convirtiendo `data.frames`
+
+
+Importando archivos con 📦 .b[`readr`]
+]
+
+.pull-right[.center.top[
+.b.purple[`tibble()`]&lt;/br&gt;&lt;/br&gt; 
+
+.b.purple[`as_tibble()`]&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;  
+
+.b.purple[`read_\*()`]  
+]]
+
+---
+class: inverse
+
+&lt;style&gt;
+.right-column{
+  padding-top: 0;
+}
+&lt;/style&gt;
+
+
+## Creando `data.frames`
+
+Podemos crear .b[data.frames] de tres maneras:
+
+
+.pull-left[
+Combinando vectores
+
+
+Convirtiendo `tibbles`
+
+
+Importando archivos]
+
+.pull-right[.center.top[
+.b.purple[`data.frame()`]&lt;/br&gt;&lt;/br&gt; 
+
+.b.purple[`as.data.frame()`]&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;  
+
+.b.purple[`read.*()`]  
+]]
+
+---
+
+# A crear tibbles 🛠️
+
+.smaller[
+Con los vectores `x` &amp; `y`
+]
+
+
+```r
+  x &lt;- c("a", "b", "c", "d")
+  y &lt;- c(1, -2, 3, NA)
+```
+
+.smaller[
+Creamos un **tibble** llamado 'prueba_tib' y lo imprimimos en la consola
+]
+
+
+
+```r
+prueba_tib &lt;- tibble(x,y)
+prueba_tib
+```
+
+```
+## # A tibble: 4 x 2
+##   x         y
+##   &lt;chr&gt; &lt;dbl&gt;
+## 1 a         1
+## 2 b        -2
+## 3 c         3
+## 4 d        NA
+```
+
+---
+
+# A crear data.frames 🛠️
+
+.smaller[
+Con los vectores `x` &amp; `y`
+]
+
+
+```r
+  x &lt;- c("a", "b", "c", "d")
+  y &lt;- c(1, -2, 3, NA)
+```
+
+.smaller[
+Creamos un **data.frame** llamado 'prueba_df' y lo imprimimos en la consola
+]
+
+
+
+```r
+prueba_df &lt;- data.frame(x,y)
+prueba_df
+```
+
+```
+##   x  y
+## 1 a  1
+## 2 b -2
+## 3 c  3
+## 4 d NA
+```
+---
+
+# Más quejas, menos acciones
+
+.smaller[
+Con el vector `x`
+]
+
+```r
+x &lt;- c(1, 3, 7, 9)
+```
+
+.smaller[
+Ejecutemos el siguiente código:
+]
+
+```r
+data.frame(x,x)
+tibble(x,x)
+```
+
+##.center[¿Qué pasó?]
+
+---
+
+&lt;/br&gt;
+
+🙋 .smaller[Queremos covertir el `data.frame`  "_mtautos_" del paquete .b[datos] a `tibble` (éste ya se encuentra en nuestro entorno global y la documentación nos dice que es un `data.frame`).&lt;/br&gt;&lt;/br&gt;   ¿Cuál de estás funciones utilizamos?]
+
+a) `tibble(mtautos)`  
+b) `as_tibble(mtautos)`  
+c) `c(mtautos)`  
+d) `read_csv(mtautos)`
+
+---
+## Convirtiendo .orange[tibbles] y .orange[data.frames]
+.smaller[Carga el paquete `datos`]
+
+```r
+library(datos)
+```
+
+.smaller[Convierte el objeto `mtautos` (es un `data.frame`) a `tibble` y guárdalo como '_mtautos_tib_']
+
+.smaller[Convierte el objeto '_mtautos_tib_' a `data.frame`]
+
+
+---
+
+# Impresión en consola
+
+Imprimamos el objeto bateadores del paquete `datos`
+
+1) Como `data.frame`  
+2) Como `tibble`
+
+###.center[¿Cuál nos gusta más?]
+
+---
+# Imprimiendo tibbles
+
+.smaller[
+Por defecto, la impresión de `tibbles` en la consola nos muestra:
+]
+
+- Las primeras 10 filas 
+- El número de filas que no se imprimieron
+- Las columnas que entran en el ancho de nuestra pantalla
+- El tipo de variable de todas las columnas
+- El nombre y tipo de las columnas que no se muestran 
+
+---
+
+class: center, middle
+## Tibbles
+`
+- Coexisten con, pero no reemplazan a los **data.frames**
+
+--
+
+- Sin sorpresas al crearlos o modificarlos
+
+--
+
+- Impresión en consola más útil e informativa
+
+---
+
+# Lecturas relevantes
+
+[Tibbles](https://r4ds-en-espaniol.netlify.app/tibbles.html)
+, en R for Data Science en Español
+
+Comparando tibbles y data frames, del curso [Stat 545](https://stat545.com/basic-data-care.html#basic-data-care) de la Universidad de British Columbia (en inglés)
+
+La historia de [stringsAsFactors](https://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) (en inglés)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
