@@ -59,7 +59,18 @@ Cada columna tiene el mismo número de filas
 
 Las columnas tienen la misma longitud (vectores y factores del mismo largo)
 
+???
+
+En nuestra disciplina dentro de la biología, casi siempre trabajamos con datos rectangulares, sin importar el programa en el que los tengamos.
+
+Rectangulares se refiere que que en una tabla con datos cada fila tiene el mismo número de columnas y cada columna el mismo número de filas. 
+
+En este caso son tres columnas, todas del mismo largo, que conforman cinco filas.
+
+Esto puede ser equivalente a un rango de celdas en una hoja de cálculo, donde necesariamente tenemos un rectangulo de datos, aunque dejemos algunas celdas en blanco.
+
 ---
+
 # En R
 
 `data.frame`    
@@ -85,6 +96,9 @@ data.frame(
 .smaller[
 Lista de vectores del mismo largo
 ]
+
+???
+En R, el data frame es la estructura fundamental que usamos para guardar y trabajar con datos rectangulares. En resumen, es una lista de vectores del mismo largo, acomodados en dos dimensiones para formar filas y columnas.
 
 ---
 
@@ -116,13 +130,18 @@ tibble(
 
 
 ???
-el paquete tibble es un componente importante, parte de los paquetes núcleo del tidyverse, facilita la gramática común provee una estructura de datos que unifica los paquetes que más usamos
+
+El objeto tibble hace lo mismo que el data frame. Almacena datos en dos dimensiones usando filas y columnas, pero tiene algunas diferencias fundamentales que lo hacen más apto para los flujos de trabajo modernos.
+
+Para darle un objeto común a los paquetes núcleo del tidyverse, el paquete tibble implementa los objetos tibble, que facilitan una gramática común y unifica los paquetes que más usamos para manejar nuestros datos.
 
 ---
 
 Las funciones más utilizadas de .b.orange[dplyr], .b.orange[tidyr], y .b.orange[readr]
 </br>
 
+???
+Es importante destacar que los tibbles no tienen porque romper nuestros flujos de trabajo. Las funciones de los paquetes que estaremos usando pueden trabajar con data frames, pero generalmente prefieren tibbles y por defecto estos son el tipo de objeto que crean, 
 --
 
 reciben un `data.frame` ➡️ regresan un `data.frame`  
@@ -141,11 +160,19 @@ class: center, middle
 
 # ¿Modernizando el `data.frame`?
 
+???
+
+Cuando digo que los tibble son una modernización del data frame, es porque el equipo que creó y mantiene los paquetes del tidyverse modificó algunas de las conductas básicas del data frame para crear un objeto que se presta menos a ambiguedades y que nos obliga, de buena manera, a escribir código más expresivo, es decir, código que hace más con menos, que transmite mejor lo que estamos haciendo, y que se puede interpretar más fácilmente.  
+
 ---
 
 ```{r, echo=FALSE, eval=TRUE, out.width="85%", fig.align='center'}
 knitr::include_graphics("motivational.png")
 ```
+
+???
+
+para ilustrar los principales cambios, les muestro esta imagen motivacional que es como algo que veríamos en una oficina de gobierno. Esta imagen nos insta a hacer más y quejarnos menos, pero los objetos tibble hacen lo contrario.
 
 ---
 
@@ -154,17 +181,29 @@ knitr::include_graphics("motivational.png")
 Hacen menos y se quejan más (por nuestro bien)
 
 ***
+
+???
+Los tibbles hacen menos, y se quejan más, mediante errores y advertencias.
+
 --
 
 .smaller[
 - No asignan nombres a las filas 
 ]
 
+???
+A diferencia de los data frames, los tibbles no tienen un atributo adicional para almacenar rótulos de cada una de las filas. Si queremos esa información, tiene que estar contenida explícitamente en una columna. 
+
 --
 
 .smaller[
 - No modifican los nombres de las columnas
 ]
+
+???
+
+Al crear o modificar data.frames, su comportamiento por defecto es de modificar los nombres de las columnas a un nombre válido en R, esto incluye cambiar espacios o evitar nombres repetidos. cuando esto pasa en un data.frame no hay notificación o advertencia, y esto nos puede tomar por sorpresa.
+
 
 --
 
@@ -179,40 +218,12 @@ Hacen menos y se quejan más (por nuestro bien)
 knitr::include_graphics("stringsfactors.png")
 ```
 
----
-class: inverse
+???
 
-<style>
-.right-column{
-  padding-top: 0;
-}
-</style>
-
-
-## Creando `tibbles`
-
-Podemos crear .b[tibbles] de tres maneras:
-
-
-.pull-left[
-Combinando vectores
-
-
-Convirtiendo `data.frames`
-
-
-Importando archivos con 📦 .b[`readr`]
-]
-
-.pull-right[.center.top[
-.b.purple[`tibble()`]</br></br> 
-
-.b.purple[`as_tibble()`]</br></br></br>  
-
-.b.purple[`read_\*()`]  
-]]
+Esto último es más técnico, pero en la mayoría de los casos no queremos que cambie el tipo de dato que hay en cada columna. Cuando tenemos texto en una columna, se queda como texto y no se transforma en una variable categórica con un número fijo de niveles. Además, los tibbles son más estrictos cuando queremos refererirnos a los nombres de las columnas, no permiten confusión o ambiguedad. 
 
 ---
+
 class: inverse
 
 <style>
@@ -246,26 +257,37 @@ Importando archivos]
 
 ---
 
-# A crear tibbles 🛠️
+class: inverse
 
-.smaller[
-Con los vectores `x` & `y`
+<style>
+.right-column{
+  padding-top: 0;
+}
+</style>
+
+
+## Creando `tibbles`
+
+Podemos crear .b[tibbles] de tres maneras:
+
+
+.pull-left[
+Combinando vectores
+
+
+Convirtiendo `data.frames`
+
+
+Importando archivos con 📦 .b[`readr`]
 ]
 
-```{r}
-  x <- c("a", "b", "c", "d")
-  y <- c(1, -2, 3, NA)
-```
+.pull-right[.center.top[
+.b.purple[`tibble()`]</br></br> 
 
-.smaller[
-Creamos un **tibble** llamado 'prueba_tib' y lo imprimimos en la consola
-]
+.b.purple[`as_tibble()`]</br></br></br>  
 
-
-```{r}
-prueba_tib <- tibble(x,y)
-prueba_tib
-```
+.b.purple[`read_\*()`]  
+]]
 
 ---
 
@@ -289,6 +311,30 @@ Creamos un **data.frame** llamado 'prueba_df' y lo imprimimos en la consola
 prueba_df <- data.frame(x,y)
 prueba_df
 ```
+
+---
+
+# A crear tibbles 🛠️
+
+.smaller[
+Con los vectores `x` & `y`
+]
+
+```{r}
+  x <- c("a", "b", "c", "d")
+  y <- c(1, -2, 3, NA)
+```
+
+.smaller[
+Creamos un **tibble** llamado 'prueba_tib' y lo imprimimos en la consola
+]
+
+
+```{r}
+prueba_tib <- tibble(x,y)
+prueba_tib
+```
+
 ---
 
 # Más quejas, menos acciones
@@ -314,7 +360,7 @@ tibble(x,x)
 
 </br>
 
-🙋 .smaller[Queremos covertir el `data.frame`  "_mtautos_" del paquete .b[datos] a `tibble` (éste ya se encuentra en nuestro entorno global y la documentación nos dice que es un `data.frame`).</br></br>   ¿Cuál de estás funciones utilizamos?]
+🙋 .smaller[Queremos convertir el `data.frame`  "_mtautos_" del paquete .b[datos] a `tibble` (éste ya se encuentra en nuestro entorno global y la documentación nos dice que es un `data.frame`).</br></br>   ¿Cuál de estás funciones utilizamos?]
 
 a) `tibble(mtautos)`  
 b) `as_tibble(mtautos)`  
@@ -335,6 +381,31 @@ library(datos)
 
 ---
 
+# Imprimiendo tibbles
+
+.smaller[
+Por defecto, la impresión de `tibbles` en la consola nos muestra:
+]
+
+--
+
+- Las primeras 10 filas 
+
+--
+
+- Cuántas filas y columnas no se imprimieron
+
+--
+
+- Las columnas que entran en el ancho de nuestra pantalla
+
+--
+
+- El tipo de variable de todas las columnas
+
+
+---
+
 # Impresión en consola
 
 Imprimamos el objeto bateadores del paquete `datos`
@@ -343,19 +414,6 @@ Imprimamos el objeto bateadores del paquete `datos`
 2) Como `tibble`
 
 ###.center[¿Cuál nos gusta más?]
-
----
-# Imprimiendo tibbles
-
-.smaller[
-Por defecto, la impresión de `tibbles` en la consola nos muestra:
-]
-
-- Las primeras 10 filas 
-- El número de filas que no se imprimieron
-- Las columnas que entran en el ancho de nuestra pantalla
-- El tipo de variable de todas las columnas
-- El nombre y tipo de las columnas que no se muestran 
 
 ---
 
